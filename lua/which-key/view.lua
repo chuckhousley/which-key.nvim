@@ -297,8 +297,12 @@ function M.on_keys(opts)
     if #results.mappings == 0 then
       M.hide()
       -- only execute if an actual key was typed while WK was open
-      if opts.auto then
+      local firstKey = string.sub(M.keys, 0, 1)
+      local skipForLeader = firstKey == vim.g.mapleader or firstKey == "g"
+      if opts.auto and not skipForLeader then
         M.execute(M.keys, M.mode, buf)
+      else
+        vim.notify(M.keys .. " is undefined")
       end
       return
     end
